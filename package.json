@@ -1,0 +1,37 @@
+{
+  "name": "contact_form_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build && next export",
+    "start": "next start",
+    "ssr": "nodemon ssr-server.js"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "pages/*",
+      "out/*",
+      ".next/*"
+    ],
+    "delay": "2500"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.20.0",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "next": "^9.5.3",
+    "nodemailer": "^6.4.11",
+    "nodemon": "^2.0.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "handlebars": "^4.7.6"
+  }
+}
