@@ -17,8 +17,10 @@ export default function index() {
 
   axios.post('/contact-email',data)
   .then(Response => {
-   console.log(Response);  
-
+   console.log(Response.data);  
+    if(Response.data === "success"){
+      contactForm_ref.current.reset();
+    }
   })
   .catch(err => {
    console.error(err);

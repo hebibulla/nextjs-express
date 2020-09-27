@@ -9,10 +9,6 @@ module.exports = class SendMail {
    userName,
    password
   ) {
-    // this.host = "smtp.mailtrap.io";
-    // this.port = 2525;
-    // this.userName = "b44524dff91b64";
-    // this.password = "15e70e916ce39b";
     this.host = host;
     this.port = port;
     this.userName = userName;

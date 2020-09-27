@@ -4,45 +4,34 @@ const bodyParser = require("body-parser");
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
-const handlebars = require('handlebars');
+const mysql = require('mysql');
 
-const NodeMailer = require("./server_src/mailer");
+const NodeMailer = require("./server_src/MailInit");
+const HtmlMailTemplate = require("./server_src/HtmlMailRender");
 
-const path = require("path");
-const fs = require('fs');
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "express"
+})
 
-var readHTMLFile = function(path, callback) {
-  fs.readFile(path, {encoding: 'utf-8'}, function (err, html) {
-      if (err) {
-          callback(err);
-          throw err;
-      }
-      else {
-          callback(null, html);
-      }
-  });
-};
-
-readHTMLFile(__dirname + '/server_src/mail/template.html','utf-8', (err, data) => {
-  // if(err) throw err;
-  console.log(data)
-  return data;
-  console.log(html_data);
-  var template = handlebars.compile(html_data);
-  var replacements = {
-       username: "John Doe"
-  };
-  var htmlToSend = template(replacements);
-  
-  console.log(htmlToSend)
-});
-
-
+db.connect((err) => {
+  if(err) throw err;
+  console.log("my sql connected")
+})
 
 app
   .prepare()
   .then(() => {
+    
     const server = express();
+
+    server.use(function timeLog  (req, res, next) {
+      console.log("Time: " + Date.now());
+      next();
+    });
+
     server.use(bodyParser.urlencoded({ extended: true }));
     server.use(bodyParser.json());
 
@@ -56,6 +45,7 @@ app
 
     server.post("/contact-email", (req, res) => {
       console.log(req.body);
+
       const sendMail = new NodeMailer(
         process.env.MAIL_HOST,
         process.env.MAIL_PORT,
@@ -63,28 +53,20 @@ app
         process.env.MAIL_PASSWORD
       );
 
-       const html_data =  fs.readFile(__dirname+'/server_src/mail/template.html','utf-8', (err, data) => {
-          if(err) throw err;
-          console.log(data)
-        });
+      // html template instans
+      const htmlTemplate = new HtmlMailTemplate().get();
 
-        var template = handlebars.compile(html_data);
-        var replacements = {
-             username: "John Doe"
-        };
-        var htmlToSend = template(replacements);
-
-        console.log(htmlToSend)
+      // send mail
       sendMail
         .send({
           from: "myCompany@gmail.com",
           to: req.body.email,
-          subject: "Hello ✔",
+          subject: "お問い合わせありがとうございます！",
           text: req.body.subject,
-          html: htmlToSend,
+          html: htmlTemplate,
         })
         .then(() => {
-          res.send("yes");
+          res.send("success");
         })
         .catch((Error) => {
           res.status(500).send(Error);
