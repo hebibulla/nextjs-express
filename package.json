@@ -7,7 +7,8 @@
     "dev": "next",
     "build": "next build && next export",
     "start": "next start",
-    "ssr": "nodemon ssr-server.js"
+    "ssr": "nodemon --exec babel-node app.js",
+    "sequelize": "node_modules/.bin/sequelize help"
   },
   "nodemonConfig": {
     "ignore": [
@@ -25,13 +26,23 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
     "next": "^9.5.3",
     "nodemailer": "^6.4.11",
     "nodemon": "^2.0.4",
+    "pg": "^8.4.1",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "sequelize": "^6.3.5",
+    "sequelize-cli": "^6.2.0",
+    "ssh2": "^0.8.9",
+    "tunnel-ssh": "^4.1.4"
   },
   "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/node": "^7.10.5",
+    "@babel/plugin-transform-react-jsx": "^7.10.4",
+    "@babel/preset-env": "^7.11.5",
     "handlebars": "^4.7.6"
   }
 }
